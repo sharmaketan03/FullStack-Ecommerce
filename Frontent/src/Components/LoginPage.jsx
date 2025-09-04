@@ -9,10 +9,12 @@ import GoogleAuth from "./GoogleAuth";
 import ReactDOM from "react-dom/client"
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
+
 function LoginPage() {
    
   const [form, setForm] = useState({ email: "", password: "",role:"user" });
-  const {signIn,setSignIn}=useContext(UserContext)
+  
+  const {signIn,setSignIn,user,setUser}=useContext(UserContext)
   const navigate = useNavigate();
   let location=useLocation()
   console.log(location.pathname)
@@ -34,7 +36,8 @@ function LoginPage() {
         
 
         console.log("successfully Login",response)
-        if(response.status=="200"){
+        if(response.data.role=="user"){
+            setUser({role:"user"})
               navigate("/")
             console.log(response)
             // setSignIn(response.data)
@@ -43,6 +46,9 @@ function LoginPage() {
             password:""
           })
         
+        }else{
+             setUser({role:"admin"})
+             navigate("/")
         }
 
     }catch(error){

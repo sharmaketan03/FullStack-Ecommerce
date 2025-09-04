@@ -1,6 +1,6 @@
 import { Router } from "express";
 // import upload from "../Middelware/CloudinaryStorage.js";
-import { Register ,Login,AddCart, addWishlist,DeletetheWish,DeleteProduct,UserloginLogOut,Logout,AddedAllProducts, updatedQuantity,updatedQuantityminus,getallwislistproducts,GoogleAuthentication} from "../Controllers/UserDetails.js";
+import { Register ,Login,AddCart, addWishlist,DeletetheWish,DeleteProduct,UserloginLogOut,Logout,AddedAllProducts, updatedQuantity,updatedQuantityminus,getallwislistproducts,GoogleAuthentication,adminpanel} from "../Controllers/UserDetails.js";
 import { User } from "../Models/userModel.js";
 import { verifyuser } from "../Middelware/jwtVerify.js";
 import { GoogleVerify } from "../Middelware/GoogleVerify.js";
@@ -11,6 +11,7 @@ const UserRouter=Router()
 
 UserRouter.post('/register',Register)
 UserRouter.post("/userlogin",Login)
+// UserRouter.post('/Admin',adminpanel)
 UserRouter.post('/auth/google',GoogleAuthentication)
 UserRouter.get("/UserAuth",verifyuser,UserloginLogOut)
 UserRouter.post("/LogOuttheweb",Logout)

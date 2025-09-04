@@ -73,11 +73,12 @@ import { instance } from "../axios";
 
 function Header() {
   const { input, setInput } = useContext(UserContext);
-  const { Cart, data } = useContext(UserContext);
+  const { Cart, data ,user} = useContext(UserContext);
+
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  async function handleLogout() {
+  console.log(user)
+ async function handleLogout() {
     try {
       let Logout = await instance.post("/app/details/LogOuttheweb", {}, { withCredentials: true });
       console.log(Logout);
@@ -97,7 +98,10 @@ function Header() {
 
   return (
     <>
-      <header className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 shadow-lg sticky top-0 z-50">
+  
+     
+      {
+        "admin"!==user?.role?( <><header className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 shadow-lg sticky top-0 z-50">
         <div className="flex items-center justify-between px-4 py-3 max-w-7xl mx-auto">
           {/* Logo */}
           <div className="flex items-center">
@@ -278,6 +282,56 @@ function Header() {
         </div>
       </div>
        <div className="h-1 bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500"></div>
+       </>):(
+        <>
+        <header className="bg-gray-900 shadow-md sticky top-0 z-50">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="flex justify-between h-16 items-center">
+      
+      {/* Logo / Title */}
+      <h1 className="text-xl font-bold text-white tracking-wide">
+        Admin Panel
+      </h1>
+
+      {/* Navigation */}
+      <nav className="flex items-center space-x-6">
+        <Link 
+          to={"/"} 
+          className="text-gray-300 hover:text-white font-medium transition-colors"
+        >
+          All Products
+        </Link>
+        <Link 
+          to={"/addProduct"} 
+          className="text-gray-300 hover:text-white font-medium transition-colors"
+        >
+          Add Product
+        </Link>
+
+        {/* Logout Button */}
+        <button
+          onClick={() => {
+            handleLogout();
+            closeMobileMenu();
+          }}
+          className="flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg transition-colors"
+        >
+          <FiLogOut size={18} />
+          <span className="font-medium">Logout</span>
+        </button>
+      </nav>
+    </div>
+  </div>
+
+  {/* Gradient line below header */}
+  <div className="h-1 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-400"></div>
+</header>
+
+       </>
+       )
+       
+      }
+     
 
        
     </>

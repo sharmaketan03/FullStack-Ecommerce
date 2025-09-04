@@ -8,7 +8,7 @@ import { Products } from "./Routes/product.js"
 import Connectdb from "./Config/db.js"
 import cookieParser from "cookie-parser"
 import cors from "cors"
-         
+import { adminpanel } from "./Controllers/UserDetails.js"  
 
 const app=express()
 const port=process.env.PORT

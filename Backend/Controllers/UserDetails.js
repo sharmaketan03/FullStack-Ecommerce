@@ -93,11 +93,12 @@ export async function Login(req, res) {
         .status(401)
         .json({ message: "message:This user does not Exists" });
     }
+    console.log("login roleuser:",finddata)
     let match = await bcrypt.compare(password, finddata.password);
     if (!match)
       return res.status(400).json({ message: "password doesn't match" });
-
-    let token = jwt.sign({ id: finddata._id }, process.env.Secret_Key, {
+   
+    let token = jwt.sign({ id: finddata._id, role: finddata.role }, process.env.Secret_Key, {
       expiresIn: "1d",
     });
 
@@ -107,7 +108,7 @@ export async function Login(req, res) {
       sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000,
     });
-    return res.json({ message: "Login Successfully" });
+    return res.json({ message: "Login Successfully",role: finddata.role });
   } catch (err) {
     res
       .status(500)
@@ -115,6 +116,29 @@ export async function Login(req, res) {
   }
 }
 
+export async function adminpanel(req,res) {
+     try{
+          let faindadmin=await userModel.findOne({role:"admin"})
+          if(!faindadmin){
+
+             let  password = '8000054'
+             let pass=await bcrypt.hash(password,10)
+               let admin= new userModel({
+                     firstname: "Admin",
+                     lastname: "User",
+                     email: "ketan301024@gmail.com",
+                     password:pass ,
+                     role: "admin"
+               })
+               await admin.save()
+          }
+          console.log("Admin user created!");
+
+     }catch(err){
+           console.log("admin User:",err)
+     }
+  
+}
 
 export async function GoogleAuthentication(req,res) {
        try{
@@ -127,6 +151,7 @@ export async function GoogleAuthentication(req,res) {
              })
              console.log("verify:",verify)
              let information= verify.getPayload()
+             console.log("information",information)
              let {name,email,picture}=information
              console.log(name,email,information)
              let check = await userModel.findOne({email:email})

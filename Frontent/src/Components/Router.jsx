@@ -11,6 +11,8 @@ import LoginPage from "./LoginPage.jsx";
 import RegisterPage from "./RegisterPage.jsx"
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import Wishlist from "./Wishlist.jsx";
+import AddProductForm from "./AddProducts.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,8 +24,9 @@ const router = createBrowserRouter([
       { path: "contact", element: <Contact /> },
       { path: "blog", element: <Blog /> },
       {path:"wishlist",element:
-        
+          <ProtectedRoute>
           <Wishlist/>
+          </ProtectedRoute>
        
       },
       {
@@ -37,12 +40,16 @@ const router = createBrowserRouter([
       },
       {
         path: "login",
-        element: <LoginPage />,
+        element: <LoginPage/>,
       },
-      {
+      {  
         path:"register",
         element:<RegisterPage/>
 
+      },
+      {
+        path:"addProduct",
+        element:<AddProductForm/>
       }
     ],
   },

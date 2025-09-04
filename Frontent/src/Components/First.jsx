@@ -11,6 +11,7 @@ function First() {
   const [Quantity, setQuantity] = useState({}); 
 const [AddtoWishlist,setAddtoWishlist]=useState([])
  const [input,setInput]=useState("")
+ const [user,setUser]=useState({})
  
 //     window.addEventListener('keydown',(e)=>{   
 //       console.log(e.key)
@@ -42,7 +43,9 @@ console.log(addtocartid)
         AddtoWishlist,
         setAddtoWishlist,
         input,
-        setInput
+        setInput,
+        user,
+        setUser
       }}
     >
       <Header />

@@ -2,16 +2,21 @@ import mongoose from "mongoose";
 import { productModel } from "../Models/productModel.js";
 import path from "path";
 import slugify from "slugify";
+import { cloudinary } from "../Config/cloudinary.js";
 export async function ADDallproduct(req, res) {
-  // console.log("single product", req.body);
-  // console.log("reverse file nhi h:-", req.file);
+  console.log("single product", req.body);
+  console.log("reverse file nhi h:-", req.files);
   try {
-    let PrimaryImage = req.file?.path;
+    let PrimaryImage= await cloudinary.uploader.upload(req.files?.PrimaryImage?.[0]?.path)
+       let  SecondaryImages= await cloudinary.uploader.upload(req.files?.SecondaryImages?.[0]?.path)
+    console.log("secondaryImages:",SecondaryImages,PrimaryImage)
+    console.log(req.files)
     // console.log(PrimaryImage);
     let ADDallproducts = {
       ...req.body,
       slug:slugify(req.body.name) + "-" + Date.now(),
-      PrimaryImage: PrimaryImage,
+      PrimaryImage: PrimaryImage.path,
+      SecondaryImages:SecondaryImages.path
     };
     // console.log("ADDallProducts:",ADDallproducts)
     let newProduct = new productModel(ADDallproducts);

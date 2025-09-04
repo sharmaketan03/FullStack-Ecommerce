@@ -18,6 +18,11 @@ import {productSchema,productModel} from './productModel.js'
               type:String,
               required:false
             },
+            role:{
+                  type:String,
+                  enum:["user","admin"] ,
+                  default:'user'
+            },
             Wishlist:[
                 {   type:mongoose.Schema.Types.ObjectId,
                     ref:"product",
