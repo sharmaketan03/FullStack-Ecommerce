@@ -36,8 +36,11 @@ function LoginPage() {
         
 
         console.log("successfully Login",response)
-        if(response.data.role=="user"){
-            setUser({role:"user"})
+        localStorage.setItem("role",JSON.stringify(response.data.role))
+        let savedrole=localStorage.getItem("role")
+        let role1=JSON.parse(savedrole)
+        if(role1=="user"){
+            setUser({role:role1})
               navigate("/")
             console.log(response)
             // setSignIn(response.data)
@@ -47,7 +50,7 @@ function LoginPage() {
           })
         
         }else{
-             setUser({role:"admin"})
+             setUser({role:role1})
              navigate("/")
         }
 

@@ -1,7 +1,8 @@
 import { Router } from "express";
-import { ADDallproduct ,GetALLproducts,GetSingleProduct} from "../Controllers/ProductDetails.js";
+import { ADDallproduct ,GetALLproducts,GetSingleProduct,deleteProduct,updateProduct} from "../Controllers/ProductDetails.js";
 import upload from "../Middelware/CloudinaryStorage.js";
 import multer from "multer";
+import { DeleteProduct } from "../Controllers/UserDetails.js";
 
 const  Products=Router()
 
@@ -11,6 +12,8 @@ Products.post("/addallproducts",upload.fields([
   ]),ADDallproduct)
 Products.get("/getallproducts",GetALLproducts)
 Products.get("/get/:id",GetSingleProduct)
+Products.delete("/ProductDelete/:id",deleteProduct)
+Products.put("/EditProducts/:id",updateProduct)
 
 
 

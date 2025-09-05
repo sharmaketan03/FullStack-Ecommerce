@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import {instance} from "../axios"
 import { useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import { UserContext } from './UserContext'
 function ProtectedRoute({children}) {
   const [user,setUser]=useState()
   

@@ -55,4 +55,22 @@ export async function GetSingleProduct(req, res) {
   }
 }
 
+export async function deleteProduct(req,res) {
+        const id =req.params.id
+         try{
+              let findProduct=await productModel.findByIdAndDelete(id)
+              // console.log(findProduct)
+
+             
+         res.status(200).json({Message:"Product Delete Successfully"})
+        }catch(err){
+           res.status(500).json({Error:"Intrnal server error",err:err})
+         }
+  
+}
+
+export async function updateProduct(req,res){
+          const param= req.params.id
+          console.log(param)
+}
 

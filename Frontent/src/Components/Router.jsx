@@ -12,6 +12,7 @@ import RegisterPage from "./RegisterPage.jsx"
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import Wishlist from "./Wishlist.jsx";
 import AddProductForm from "./AddProducts.jsx";
+import EditProduct from "./EditProduct.jsx";
 
 const router = createBrowserRouter([
   {
@@ -50,7 +51,8 @@ const router = createBrowserRouter([
       {
         path:"addProduct",
         element:<AddProductForm/>
-      }
+      },
+      
     ],
   },
 ]);

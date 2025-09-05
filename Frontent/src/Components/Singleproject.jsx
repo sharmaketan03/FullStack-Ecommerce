@@ -2,6 +2,8 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
 import { instance } from "../axios";
+import { Link } from "react-router-dom";
+
 
 function Singleproject() {
   const { id } = useParams();
@@ -22,8 +24,10 @@ function Singleproject() {
     setQuantity,
     Cart,
     setCart,
+    user,
+    setUser,
   } = useContext(UserContext);
-
+  console.log(user)
   useEffect(() => {
     if (id) {
       fetchData(id);
@@ -62,6 +66,26 @@ function Singleproject() {
     }
   }
 
+  async function DeleteProduct(id) {
+      console.log(id)
+      try{
+          let res=await instance.delete("/app/detail/ProductDelete/" + id)
+          console.log(res)
+          if(res.status=="200"){
+            navigate("/")
+          }
+
+      }catch(err){
+         console.log("error found in delete admin product",err)
+      }
+    
+  }
+
+  async function EditProduct(id){
+     
+
+  }
+
   async function AddWishlist(e) {
     e.preventDefault();
     
@@ -83,7 +107,7 @@ function Singleproject() {
         <img
           src={product.PrimaryImage}
           alt=""
-          className="w-72 h-72 object-contain rounded-lg shadow-md border"
+          className="w-72 h-72 object-contain rounded-lg shadow-md border-2"
         />
       </div>
 
@@ -98,8 +122,27 @@ function Singleproject() {
         <h1 className="text-lg text-green-600 font-semibold">
           Discounted Price: ${product.Discountedprice}
         </h1>
-
+    
+       {   'admin'==user?.role?(
+         <>
+         <button
+          className="bg-blue-600 text-white px-5 py-2 rounded-lg shadow hover:bg-blue-700 disabled:opacity-50 transition"
+          onClick={()=>{DeleteProduct(product._id)}}
+          disabled={disabled}
+        >
+          Delete
+        </button>
+        
         <button
+          className="bg-pink-600 text-white px-5 py-2 ml-4 rounded-lg shadow hover:bg-pink-700 disabled:opacity-50 transition"
+          onClick={()=>{EditProduct(product._id)}}
+          disabled={DisabledWishlist}
+        >
+          Edit Product
+        </button>
+         </>
+       ):(<>
+       <button
           className="bg-blue-600 text-white px-5 py-2 rounded-lg shadow hover:bg-blue-700 disabled:opacity-50 transition"
           onClick={handleAddCart}
           disabled={disabled}
@@ -114,6 +157,9 @@ function Singleproject() {
         >
           Wishlist
         </button>
+       </>)
+
+       }
       </div>
     </div>
   );

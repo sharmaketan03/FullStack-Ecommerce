@@ -97,7 +97,7 @@ export async function Login(req, res) {
     let match = await bcrypt.compare(password, finddata.password);
     if (!match)
       return res.status(400).json({ message: "password doesn't match" });
-   
+    console.log("finddata.role:",finddata.role)
     let token = jwt.sign({ id: finddata._id, role: finddata.role }, process.env.Secret_Key, {
       expiresIn: "1d",
     });

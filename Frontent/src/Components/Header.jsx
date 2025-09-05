@@ -73,7 +73,7 @@ import { instance } from "../axios";
 
 function Header() {
   const { input, setInput } = useContext(UserContext);
-  const { Cart, data ,user} = useContext(UserContext);
+  const { Cart, data ,user,setUser} = useContext(UserContext);
 
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -82,6 +82,7 @@ function Header() {
     try {
       let Logout = await instance.post("/app/details/LogOuttheweb", {}, { withCredentials: true });
       console.log(Logout);
+      setUser({role:""})
       navigate("/login")
     } catch (err) {
       console.log("Donot LogOUt", err);
@@ -289,9 +290,11 @@ function Header() {
     <div className="flex justify-between h-16 items-center">
       
       {/* Logo / Title */}
+      <Link to={"/"}>
       <h1 className="text-xl font-bold text-white tracking-wide">
         Admin Panel
       </h1>
+      </Link>
 
       {/* Navigation */}
       <nav className="flex items-center space-x-6">

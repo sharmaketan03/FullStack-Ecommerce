@@ -41,6 +41,7 @@
       }
 
 
-   })
+   }
+)
 
    export let productModel= mongoose.model("product",productSchema)

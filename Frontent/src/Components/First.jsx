@@ -26,7 +26,14 @@ const [AddtoWishlist,setAddtoWishlist]=useState([])
 //   e.returnValue = '';      // Chrome/Firefox ke liye required
 //   // console.log('Page unload requested');
 // });
-
+useEffect(()=>{
+   let savedvalue=localStorage.getItem("role")
+   let role1=JSON.parse(savedvalue)
+   console.log(role1)
+   if(role1){
+      setUser({role:role1})
+   }
+},[])
 
 console.log(addtocartid)
   return (

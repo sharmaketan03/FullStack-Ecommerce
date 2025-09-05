@@ -39,6 +39,7 @@ function AddProductForm() {
     Object.keys(formData).forEach((key) => {
       if (Array.isArray(formData[key])) {
         formData[key].forEach((file) => data.append(key, file));
+        console.log(data)
       } else {
         data.append(key, formData[key]);
       }
@@ -67,7 +68,7 @@ function AddProductForm() {
         Attribute: "",
       });
     } catch (err) {
-      console.error("❌ Error adding product:", err);
+      console.error(" Error adding product:", err);
       
     }
   };
