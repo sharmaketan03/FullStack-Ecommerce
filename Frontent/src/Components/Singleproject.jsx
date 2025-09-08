@@ -82,7 +82,7 @@ function Singleproject() {
   }
 
   async function EditProduct(id){
-     
+     navigate("/EditProduct/"+id)
 
   }
 
@@ -140,6 +140,7 @@ function Singleproject() {
         >
           Edit Product
         </button>
+      
          </>
        ):(<>
        <button

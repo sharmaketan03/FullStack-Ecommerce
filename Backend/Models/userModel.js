@@ -41,7 +41,7 @@ import {productSchema,productModel} from './productModel.js'
               
               }
             ]
-  })
+  },{timestamps:true})
 
 let userModel= mongoose.model("user",User)
 export default userModel

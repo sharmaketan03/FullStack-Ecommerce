@@ -70,7 +70,36 @@ export async function deleteProduct(req,res) {
 }
 
 export async function updateProduct(req,res){
-          const param= req.params.id
-          console.log(param)
+      let {id}= req.params
+   
+       
+       
+           console.log(req.body,req.files,id)
+
+
+           try{
+              
+                  let update={...req.body}
+                      if(req.files?.PrimaryImage?.length>0){
+                          update.PrimaryImage=req.files?.PrimaryImage[0].path
+                      }
+                      if(req.files?.SecondaryImages?.length>0){
+                          update.SecondaryImages=req.files.SecondaryImages.map(item=>item.path)
+                      }
+
+                      console.log(update)
+
+
+                      let updatemodel=await productModel.findByIdAndUpdate(id,{ $set:update },{ new:true })
+                      console.log(updatemodel)
+                          res.status(200).json({message:"Successfully Edit Product"})
+                      
+                
+
+          }catch(err){
+             res.status(500).json({message:"Internal Server error",Error:err})
+          }
+          
 }
 
+ 

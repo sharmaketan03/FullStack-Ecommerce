@@ -52,7 +52,10 @@ const router = createBrowserRouter([
         path:"addProduct",
         element:<AddProductForm/>
       },
-      
+      {
+        path:"EditProduct/:id",
+        element:<EditProduct/>
+      }
     ],
   },
 ]);

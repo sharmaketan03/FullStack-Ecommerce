@@ -13,7 +13,10 @@ Products.post("/addallproducts",upload.fields([
 Products.get("/getallproducts",GetALLproducts)
 Products.get("/get/:id",GetSingleProduct)
 Products.delete("/ProductDelete/:id",deleteProduct)
-Products.put("/EditProducts/:id",updateProduct)
+Products.put("/EditProducts/:id",upload.fields([
+  {name:"PrimaryImage",maxCount:1},
+  {name:"SecondaryImages",maxCount:5}
+]),updateProduct)
 
 
 

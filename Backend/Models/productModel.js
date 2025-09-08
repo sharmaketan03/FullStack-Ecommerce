@@ -13,13 +13,14 @@
       type:String,
       required :true
       },
-      PrimaryImage:{
+      PrimaryImages:{
       type:String,
       required:true
       },
-      SecondaryImages:{
-         type:String
-      },
+      SecondaryImage:
+        [ {type:String}]
+        
+      ,
       quantity:{
       type:Number,
       required:true
@@ -41,7 +42,7 @@
       }
 
 
-   }
+   },{timestamps:true}
 )
 
    export let productModel= mongoose.model("product",productSchema)
