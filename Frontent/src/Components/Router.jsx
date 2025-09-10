@@ -13,6 +13,7 @@ import ProtectedRoute from "./ProtectedRoute.jsx";
 import Wishlist from "./Wishlist.jsx";
 import AddProductForm from "./AddProducts.jsx";
 import EditProduct from "./EditProduct.jsx";
+import OrderForm from "./OrderForm.jsx";
 
 const router = createBrowserRouter([
   {

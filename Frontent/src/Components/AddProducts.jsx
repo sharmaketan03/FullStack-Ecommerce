@@ -20,41 +20,58 @@ function AddProductForm() {
     const { name, type, files, value, multiple } = e.target;
    console.log(name,type,files,value,multiple)
     if (type === "file") {
-      if (multiple) {
-        setFormData({ ...formData, [name]: Array.from(files) });
+      if (name=="SecondaryImages") {
+          let newfile=Array.from(files)
+          console.log(newfile)
+        setFormData(prev=>({ ...prev, SecondaryImages: [...prev.SecondaryImages,...newfile] }));
       } else {
         setFormData({ ...formData, [name]: files[0] });
       }
     } else {
       setFormData({ ...formData, [name]: value });
     }
+
+    console.log(formData)
   };
 
-  // ✅ Submit handler
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData)
     const data = new FormData();
      
-    Object.keys(formData).forEach((key) => {
-      if (Array.isArray(formData[key])) {
-        formData[key].forEach((file) => data.append(key, file));
-        console.log(data)
-      } else {
-        data.append(key, formData[key]);
-      }
-    });
+    data.append("name",formData.name)
+    data.append("slug",formData.slug)
+    data.append("category",formData.category)
+    data.append("quantity",formData.quantity)
+    data.append("Originalprice",formData.Originalprice)
+    data.append("Discountedprice",formData.Discountedprice)
+    data.append("Discription",formData.Discription)
+    data.append("Attribute",formData.Attribute)
 
+    if(formData.PrimaryImage){
+        data.append("PrimaryImage",formData.PrimaryImage)
+    }
+    if(formData.SecondaryImages){
+        formData.SecondaryImages.map(item=>{
+             data.append("SecondaryImages",item)
+        })
+    }
+
+   for(let [key,value] of data.entries()){
+       console.log(key,value)
+   }
+      
     try {
       const res = await instance.post("/app/detail/addallproducts", data, {
        
         withCredentials: true,
       });
 
-      console.log("✅ Product Added:", res);
+      console.log(" Product Added:", res);
       alert("Product added successfully!");
 
-      // reset form
+      
       setFormData({
         name: "",
         slug: "",

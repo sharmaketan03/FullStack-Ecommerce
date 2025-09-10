@@ -2,31 +2,48 @@ import mongoose from "mongoose";
 import { productModel } from "../Models/productModel.js";
 import path from "path";
 import slugify from "slugify";
-import { cloudinary } from "../Config/cloudinary.js";
+
+import Stripe from "stripe";
+import "dotenv/config"
+
+
+
 export async function ADDallproduct(req, res) {
-  console.log("single product", req.body);
-  console.log("reverse file nhi h:-", req.files);
+  console.log("Request body:", req.body);
+  console.log("Files received:", req.files);
+
   try {
-    let PrimaryImage= await cloudinary.uploader.upload(req.files?.PrimaryImage?.[0]?.path)
-       let  SecondaryImages= await cloudinary.uploader.upload(req.files?.SecondaryImages?.[0]?.path)
-    console.log("secondaryImages:",SecondaryImages,PrimaryImage)
-    console.log(req.files)
-    // console.log(PrimaryImage);
-    let ADDallproducts = {
+    
+    let primaryUpload = req.files?.PrimaryImage[0]?.path;
+
+   
+    let secondaryImagesUpload = [];
+    if (req.files?.SecondaryImages) {
+      for (const file of req.files.SecondaryImages) {
+        secondaryImagesUpload.push(file.path); 
+      }
+    }
+
+    
+    let newProductData = {
       ...req.body,
-      slug:slugify(req.body.name) + "-" + Date.now(),
-      PrimaryImage: PrimaryImage.path,
-      SecondaryImages:SecondaryImages.path
+      slug: slugify(req.body.name) + "-" + Date.now(),
+      PrimaryImage: primaryUpload,          
+      SecondaryImage: secondaryImagesUpload 
     };
-    // console.log("ADDallProducts:",ADDallproducts)
-    let newProduct = new productModel(ADDallproducts);
-    // console.log("newProduct",newProduct)
+
+    console.log("Product to save:", newProductData);
+
+    let newProduct = new productModel(newProductData);
     await newProduct.save();
+
     res.status(201).json({ message: "Product added", product: newProduct });
   } catch (err) {
-    res.status(500).json({message:"Internal server Error"});
+    console.error("Error adding product:", err); 
+    res.status(500).json({ message: "Internal Server Error" });
   }
 }
+
 
 export async function GetALLproducts(req, res) {
   // console.log("GetProducts");
@@ -102,4 +119,25 @@ export async function updateProduct(req,res){
           
 }
 
- 
+
+
+export async function PayementMethod(req, res) {
+  const { amount } = req.body;
+
+  const stripe = new Stripe(process.env.STRIP_SECRETKEY); 
+
+  try {
+    const payment = await stripe.paymentIntents.create({
+      amount: parseInt(amount),  
+      currency: "inr",           
+    });
+
+    res.status(200).json({
+      message: "Payment successful",
+      clientSecret: payment.client_secret, 
+    });
+  } catch (err) {
+    console.error("Stripe error:", err.message);
+    res.status(500).json({ message: "Internal Server Error", error: err.message });
+  }
+}

@@ -42,36 +42,36 @@ export async function Register(req, res) {
     await newUser.save();
     console.log('register email 1:',email)
 
-    let auth= nodemailer.createTransport({
-          service:'gmail',
-          secure:false,
-          port:587,
-          auth:{
-            user: "ketan301024@gmail.com",
-            pass: "wazf xyqj axlh mtyc"
-          }
+//     let auth= nodemailer.createTransport({
+//           service:'gmail',
+//           secure:false,
+//           port:587,
+//           auth:{
+//             user: "ketan301024@gmail.com",
+//             pass: "wazf xyqj axlh mtyc"
+//           }
 
-    })
-   const reciver = {
-  from: "ketan301024@gmail.com",
-  to: email,
-  subject: "Welcome to Ecommerce Web (aapki apni dukkan)! 🎉",
-  text:
-    "Hi " + firstname + " " + lastname + ",\n\n" +
-    "Thank you for registering with Ecommerce Web App.\n" +
-    "We’re excited to have you onboard! 🎊\n\n" +
-    "You can now explore our latest collections, track your orders, and enjoy exclusive offers.\n\n" +
-    "👉 Get started here: Ecommerce Web(apki apni dukkan)\n\n" +
-    "Best regards,\n" +
-    "Team Ecommerce Web",
-};
+//     })
+//    const reciver = {
+//   from: "ketan301024@gmail.com",
+//   to: email,
+//   subject: "Welcome to Ecommerce Web (aapki apni dukkan)! 🎉",
+//   text:
+//     "Hi " + firstname + " " + lastname + ",\n\n" +
+//     "Thank you for registering with Ecommerce Web App.\n" +
+//     "We’re excited to have you onboard! 🎊\n\n" +
+//     "You can now explore our latest collections, track your orders, and enjoy exclusive offers.\n\n" +
+//     "👉 Get started here: Ecommerce Web(apki apni dukkan)\n\n" +
+//     "Best regards,\n" +
+//     "Team Ecommerce Web",
+// };
 
-auth.sendMail(reciver,(error,emailresponse)=>{
-  if(error){
-    return console.log("Error:", error);
-  }
-  console.log("Message sent: %s",emailresponse.messageId)
-})
+// auth.sendMail(reciver,(error,emailresponse)=>{
+//   if(error){
+//     return console.log("Error:", error);
+//   }
+//   console.log("Message sent: %s",emailresponse.messageId)
+// })
 
 
     return res
@@ -357,26 +357,36 @@ export async function AddedAllProducts(req, res) {
   }
 }
 
-export async function updatedQuantity(req,res){
-    let value= Object.values(req.body.quantity)[0]
-    console.log(req.params.id,value + 1)
-    try{
-         let faindid=await userModel.findById(req.user.id)
-        //  console.log('faindid:',faindid)
-         if(!faindid) return res.status(400).json({message:'The Product does not found'})
-        faindid.Cart=  faindid.Cart.map((item)=> {
-           if(item.product.toString()==req.params.id.toString()){
-             item.quantity=value + 1
-             console.log(faindid.Cart.quantity,faindid)
-           }
-           return item
-        })
-       await faindid.save()
-       res.status(200).json({message:'this is the message'})
-    }catch(err){
-    console.log('err',err)
-    }
+export async function updatedQuantity(req, res) {
+  try {
+    const productId = req.params.id;
+    const newQuantity = req.body.quantity; // Expecting number from frontend
+
+    // Find the user
+    const user = await userModel.findById(req.user.id);
+    if (!user) return res.status(400).json({ message: "User not found" });
+
+    // Update the quantity in the cart
+    let itemFound = false;
+    user.Cart = user.Cart.map((item) => {
+      if (item.product.toString() === productId.toString()) {
+        item.quantity = newQuantity;
+        itemFound = true;
+      }
+      return item;
+    });
+
+    if (!itemFound) return res.status(404).json({ message: "Product not in cart" });
+
+    await user.save();
+
+    return res.status(200).json({ message: "Quantity updated", cart: user.Cart });
+  } catch (err) {
+    console.error("Error updating quantity:", err);
+    return res.status(500).json({ message: "Server error" });
+  }
 }
+
 
 export async function updatedQuantityminus(req,res){
           console.log('quantity:',req.user.id,req.body.quantity)

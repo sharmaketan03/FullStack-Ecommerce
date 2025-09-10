@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ADDallproduct ,GetALLproducts,GetSingleProduct,deleteProduct,updateProduct} from "../Controllers/ProductDetails.js";
+import { ADDallproduct ,GetALLproducts,GetSingleProduct,deleteProduct,updateProduct,PayementMethod} from "../Controllers/ProductDetails.js";
 import upload from "../Middelware/CloudinaryStorage.js";
 import multer from "multer";
 import { DeleteProduct } from "../Controllers/UserDetails.js";
@@ -17,6 +17,9 @@ Products.put("/EditProducts/:id",upload.fields([
   {name:"PrimaryImage",maxCount:1},
   {name:"SecondaryImages",maxCount:5}
 ]),updateProduct)
+
+
+Products.post("/create-payment-intent",PayementMethod)
 
 
 

@@ -73,7 +73,7 @@ import { instance } from "../axios";
 
 function Header() {
   const { input, setInput } = useContext(UserContext);
-  const { Cart, data ,user,setUser} = useContext(UserContext);
+  const { Cart, data ,user,setUser,setCart} = useContext(UserContext);
 
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -82,6 +82,7 @@ function Header() {
     try {
       let Logout = await instance.post("/app/details/LogOuttheweb", {}, { withCredentials: true });
       console.log(Logout);
+      setCart("")
       setUser({role:""})
       navigate("/login")
     } catch (err) {

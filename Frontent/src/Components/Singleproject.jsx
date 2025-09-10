@@ -3,6 +3,9 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
 import { instance } from "../axios";
 import { Link } from "react-router-dom";
+import OrderForm from "./OrderForm";
+import "../index.css"
+ import OrderFormWrapper from "./OrderForm.jsx";
 
 
 function Singleproject() {
@@ -14,6 +17,8 @@ function Singleproject() {
   const [disabled, setDisabled] = useState(false);
   const [DisabledWishlist, setDisabledWishlist] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const [showOrderForm, setShowOrderForm] = useState(false);
+ 
 
   const {
     AddtoWishlist,
@@ -158,6 +163,44 @@ function Singleproject() {
         >
           Wishlist
         </button>
+        
+ <button
+    className="bg-green-600 text-white px-5 py-2 ml-4 rounded-lg shadow hover:bg-green-700 disabled:opacity-50 transition"
+  
+      onClick={() => setShowOrderForm(true)}
+ 
+    disabled={disabled}
+  >
+    Buy
+  </button>
+    {showOrderForm && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-25 flex justify-center items-center z-50 transition-opacity duration-300 ease-in-out opacity-100"
+          onClick={() => setShowOrderForm(false)} 
+        >
+          <div 
+            className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full relative animate-fadeIn"
+            onClick={e => e.stopPropagation()} 
+          >
+            <button
+              className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 text-3xl font-bold"
+              onClick={() => setShowOrderForm(false)}
+              aria-label="Close popup"
+            >
+              ×
+            </button>
+            <OrderFormWrapper product={product} onClose={() => setShowOrderForm(false)} />
+          </div>
+        </div>
+      )}
+
+
+
+
+
+
+
+       
        </>)
 
        }

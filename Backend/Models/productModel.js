@@ -13,11 +13,11 @@
       type:String,
       required :true
       },
-      PrimaryImages:{
+      PrimaryImage:{
       type:String,
       required:true
       },
-      SecondaryImage:
+      SecondaryImages:
         [ {type:String}]
         
       ,

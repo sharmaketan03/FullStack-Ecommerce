@@ -67,3 +67,10 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 } */
+@keyframes fadeIn {
+  from { opacity:  0.5 ; }
+  to { opacity: 0.8; }
+}
+.animate-fadeIn {
+  animation: fadeIn 7s ease forwards;
+}
