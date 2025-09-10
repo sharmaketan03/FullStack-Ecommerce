@@ -89,30 +89,45 @@ export async function Login(req, res) {
   try {
     let finddata = await userModel.findOne({ email });
     if (!finddata) {
-      return res
-        .status(401)
-        .json({ message: "message:This user does not Exists" });
+      return res.status(401).json({ message: "This user does not exist" });
     }
-    console.log("login roleuser:",finddata)
+    console.log("login roleuser:", finddata);
+
     let match = await bcrypt.compare(password, finddata.password);
-    if (!match)
-      return res.status(400).json({ message: "password doesn't match" });
-    console.log("finddata.role:",finddata.role)
-    let token = jwt.sign({ id: finddata._id, role: finddata.role }, process.env.Secret_Key, {
-      expiresIn: "1d",
-    });
+    console.log("Password match:", match);
+    if (!match) {
+      return res.status(400).json({ message: "Password doesn't match" });
+    }
+
+    console.log("finddata._id:", finddata._id);
+    console.log("finddata.role:", finddata.role);
+    console.log("Secret_Key:", process.env.Secret_Key);
+
+    let token;
+    try {
+      token = jwt.sign(
+        { id: finddata._id, role: finddata.role },
+        process.env.Secret_Key,
+        { expiresIn: "1d" }
+      );
+    } catch (error) {
+      console.error("JWT Sign Error:", error);
+      return res.status(500).json({ message: "Token generation failed", error: error.message });
+    }
+
+    console.log("Generated Token:", token);
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: false, // set true if using https
+      sameSite: none,
       maxAge: 24 * 60 * 60 * 1000,
     });
-    return res.json({ message: "Login Successfully",role: finddata.role });
+
+    return res.json({ message: "Login Successfully", role: finddata.role });
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "message:Internal server error", error: err.message });
+    console.error("Internal Server Error:", err);
+    return res.status(500).json({ message: "Internal server error", error: err.message });
   }
 }
 
@@ -172,7 +187,7 @@ export async function GoogleAuthentication(req,res) {
                  res.cookie("tokenjwt",tokenjwt,{
                   httpOnly:true,
                   secure:false,
-                  sameSite:'lax',
+                  sameSite:none,
                   maxAge:24*60*60*1000
                  })
 

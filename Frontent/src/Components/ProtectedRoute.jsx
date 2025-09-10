@@ -17,7 +17,7 @@ function ProtectedRoute({children}) {
                   
           }catch(err){
                 console.log("user don't Login",err)
-                navigate("/login")
+                // navigate("/login")
           }
   }
   useEffect(()=>{
