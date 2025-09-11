@@ -56,6 +56,7 @@ function LoginPage() {
 
     }catch(error){
           console.log("unsuccessfull",error)
+          navigate("/login")
     }
   };
   console.log(import.meta.env.VITE_GOOGLE_CLIENT_ID)
@@ -66,10 +67,8 @@ function LoginPage() {
      
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
             
-        <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
-          <GoogleOAuthProvider  clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-    <GoogleAuth/>
-    </GoogleOAuthProvider>
+        <h2 className="text-2xl font-bold text-center text-blue-600 mx-6 ">
+          
           Login
         </h2>
 
@@ -113,9 +112,16 @@ function LoginPage() {
           <Link to="/register" className="text-blue-600 font-medium underline">
             Register
           </Link>
+          
         </p>
      
+     <div className="flex justify-center mt-5  w-full h-full">
+        <GoogleOAuthProvider  clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID} >
+           <GoogleAuth/>
+          </GoogleOAuthProvider>
       </div>
+      </div>
+      
       
     </div>
     </>

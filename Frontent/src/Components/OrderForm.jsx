@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { instance } from "../axios";
-
+import { useNavigate } from "react-router-dom";
 const stripePromise = loadStripe("pk_test_51S5LGyFYioXiBE2AKNUcoaK9ZjEqjsQEZi3rOYkXXFeJLMMD7s2vdKUB2FM8VOAhnZhsLxfd6P8w4IxQR1IJ9ZsT00UuU3VKu4");
 
 function OrderFormWrapper({ product, onClose }) {
@@ -22,6 +22,8 @@ function OrderForm({ product, onClose }) {
     const [loading, setLoading] = useState(false);
     const [amount, setAmount] = useState(0);
 
+    
+    let navigate=useNavigate()
     const stripe = useStripe();
     const elements = useElements();
 
@@ -44,7 +46,10 @@ function OrderForm({ product, onClose }) {
             if (!stripe || !elements) {
                 alert("Stripe is not loaded.");
                 return;
-            }
+            }  
+            //  else if(paymentMethod=="cod"){
+
+            // }
 
             setLoading(true);
             try {
@@ -72,6 +77,7 @@ function OrderForm({ product, onClose }) {
                     if (result.paymentIntent.status === "succeeded") {
                         alert("Payment successful!");
                         setSubmitted(true);
+                        
                     }
                 }
             } catch (err) {
@@ -91,10 +97,22 @@ function OrderForm({ product, onClose }) {
             setSubmitted(true);
         }
     };
+
+    useEffect(() => {
+  if (submitted) {
+    const timer = setTimeout(() => {
+      navigate("/");
+    }, 1000);
+
+    return () => clearTimeout(timer); 
+  }
+}, [submitted, navigate]);
     
 
     if (submitted) {
         return (
+
+            <>
             <div className="max-w-sm mx-auto p-4 bg-white rounded shadow mt-8 text-center">
                 <h2 className="text-xl font-bold mb-4">Thank you!</h2>
                 <p>We will deliver your product soon.</p>
@@ -105,6 +123,9 @@ function OrderForm({ product, onClose }) {
                     Close
                 </button>
             </div>
+            navigate("/")
+</>
+
         );
     }
 
@@ -163,7 +184,7 @@ function OrderForm({ product, onClose }) {
                         className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                     >
                         <option value="standard">Standard Delivery - Free</option>
-                        <option value="express">Express Delivery - ₹100</option>
+                        <option value="express">Express Delivery   -Free</option>
                     </select>
                 </div>
 

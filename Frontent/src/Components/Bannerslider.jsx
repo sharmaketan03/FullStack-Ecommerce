@@ -23,14 +23,14 @@ const Bannerslider = () => {
         pagination={{ clickable: true }}
         autoplay={{ delay: 3000, disableOnInteraction: false }}
         loop={true}
-        className="rounded-lg overflow-hidden"
+        className=" overflow-hidden"
       >
         {banners.map((banner, index) => (
           <SwiperSlide key={index}>
             <img
               src={banner}
               alt={`Banner ${index + 1}`}
-              className="w-full h-[400px] object-cover"
+              className="w-full h-[400px] "
             />
           </SwiperSlide>
         ))}

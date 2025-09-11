@@ -8,7 +8,7 @@ function GoogleAuth() {
               const googletoken=response.credential
               console.log("googletoken:",googletoken)
         try{
-           let res=await instance.post('/app/details/auth/google',{token:googletoken},{withCredentials:true})
+           let res=await instance.post('/app/details/auth/google',{token:googletoken})
            console.log(res)
            if(res.status==200){
             navigate('/')
@@ -19,9 +19,10 @@ function GoogleAuth() {
     }
   return (
     <>
-    <div>GoogleAuth</div>
+  
     <GoogleLogin   onSuccess={handelogin}
     onError={()=>{console.log("Login Failed")}}
+     
     />
     </>
   )

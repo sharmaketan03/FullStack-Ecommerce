@@ -11,8 +11,7 @@ import {OAuth2Client} from "google-auth-library"
 import nodemailer from "nodemailer"
 import { text } from "stream/consumers";
 
-const Client = new OAuth2Client(process.env.Google_Client_id)
-console.log(Client)
+// console.log(Client)
 
 // import { use } from "react"
 export async function Register(req, res) {
@@ -155,31 +154,36 @@ export async function adminpanel(req,res) {
   
 }
 
+
+
+
 export async function GoogleAuthentication(req,res) {
        try{
              const {token} = req.body
-             console.log('GoogleAuthentication:',token)
+            //  console.log('GoogleAuthentication:',token)
+            const Client = new OAuth2Client(process.env.Google_Client_id)
              let verify=await Client.verifyIdToken({
                idToken:token,
                audience:process.env.Google_Client_id
 
              })
-             console.log("verify:",verify)
+            
              let information= verify.getPayload()
              console.log("information",information)
              let {name,email,picture}=information
-             console.log(name,email,information)
-             let check = await userModel.findOne({email:email})
-             console.log(check)
+             
+             let check = await userModel.findOne({ email })
+             console.log("check data:",check)
              if(!check){
                  let newuser= new userModel({
                  name,
                  email,
-                 picture
+                 picture,
+                 
                  })
 
                  await newuser.save()
-
+                 check=newuser;
                 
              }
               let tokenjwt=jwt.sign({id:check._id},process.env.Secret_Key,{expiresIn:'1d'})
@@ -191,7 +195,7 @@ export async function GoogleAuthentication(req,res) {
                   maxAge:24*60*60*1000
                  })
 
-                 res.status(200).json({message:"successs fully google cookies sent"})
+                 res.status(200).json({message:"successs fully google cookies sent",role:check.role})
 
        }catch(err){
           console.log("googleauth:",err)
