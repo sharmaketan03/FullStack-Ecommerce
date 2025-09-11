@@ -18,11 +18,9 @@ app.use(cookieParser())
 
 
  const corsOptions={
-     origin:[
- process.env.FRONTEND_URL,
-"https://fullstack-ecommerce-qam1.onrender.com"
-],
-     methods:["GET","POST","DELETE","PUT"],
+     origin:process.env.FRONTEND_URL,
+
+   methods:["GET","POST","DELETE","PUT"],
      credentials: true
  }
 

@@ -223,11 +223,11 @@ export async function Logout(req, res) {
     (res.clearCookie("token", {
       httpOnly: true,
       secure: true,
-      sameSite: "lax",
+      sameSite: "none",
     }) &&  res.clearCookie("tokenjwt",{
       httpOnly: true,
       secure: true,
-      sameSite: "lax",
+      sameSite: "none",
 
     }))
     // console.log("yhaa tk shi h")
