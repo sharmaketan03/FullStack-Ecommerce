@@ -13,11 +13,11 @@ function ProtectedRoute({children}) {
 
                 console.log(response)
                 setUser(response)
-                // navigate('/')
+                navigate('/')
                   
           }catch(err){
                 console.log("user don't Login",err)
-                // navigate("/login")
+                navigate("/login")
           }
   }
   useEffect(()=>{
