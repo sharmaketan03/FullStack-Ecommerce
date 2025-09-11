@@ -120,7 +120,7 @@ export async function Login(req, res) {
     res.cookie("token", token, {
       httpOnly: true,
       secure: false, // set true if using https
-      sameSite: none,
+      sameSite: "none",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
@@ -187,7 +187,7 @@ export async function GoogleAuthentication(req,res) {
                  res.cookie("tokenjwt",tokenjwt,{
                   httpOnly:true,
                   secure:false,
-                  sameSite:none,
+                  sameSite:"none",
                   maxAge:24*60*60*1000
                  })
 
@@ -209,7 +209,7 @@ export async function GoogleAuthentication(req,res) {
 
 
 export async function UserloginLogOut(req, res) {
-  console.log(req.cookies.tokenjwt);
+  console.log("req.cookies.tokenjwt:",req.cookies.tokenjwt);
   if (req.cookies.token || req.cookies.tokenjwt) {
     return res.json({ message: "User Logged In", user: req.user });
   } else {
