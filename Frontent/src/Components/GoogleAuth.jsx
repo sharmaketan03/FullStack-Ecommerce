@@ -3,7 +3,7 @@ import {GoogleLogin} from "@react-oauth/google"
 import { instance } from '../axios'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from './UserContext'
-import { useContext } from 'react-router-dom'
+import { useContext } from 'react'
 function GoogleAuth() {
   const {user,setUser}=useContext(UserContext)
   let navigate=useNavigate()
