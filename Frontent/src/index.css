@@ -74,3 +74,13 @@ button:focus-visible {
 .animate-fadeIn {
   animation: fadeIn 7s ease forwards;
 }
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}

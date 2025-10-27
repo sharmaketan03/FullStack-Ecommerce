@@ -5,7 +5,7 @@ import { FiMail, FiPhone, FiMapPin, FiHeart } from "react-icons/fi";
 function Footer() {
   return (
     <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-300 mt-16 relative overflow-hidden">
-      {/* 🌟 Decorative Background Elements */}
+      {/*  Decorative Background Elements */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-10 left-10 w-72 h-72 bg-blue-500 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-500 rounded-full blur-3xl"></div>
@@ -15,7 +15,7 @@ function Footer() {
       <div className="relative max-w-[1400px] mx-auto px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
           
-          {/* 🏪 Brand Section */}
+          {/*  Brand Section */}
           <div className="space-y-4">
             <Link to="/" className="group inline-block">
               <h2 className="text-3xl font-black text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text group-hover:scale-105 transition-transform duration-300 flex items-center gap-2">
@@ -61,7 +61,7 @@ function Footer() {
             </div>
           </div>
 
-          {/* ⚙️ Quick Links */}
+          {/*  Quick Links */}
           <div>
             <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
               <span className="w-1 h-6 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></span>
@@ -107,7 +107,7 @@ function Footer() {
             </ul>
           </div>
 
-          {/* 🧾 Customer Support */}
+          {/*  Customer Support */}
           <div>
             <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
               <span className="w-1 h-6 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></span>
@@ -153,7 +153,7 @@ function Footer() {
             </ul>
           </div>
 
-          {/* 📞 Contact Section */}
+          {/*  Contact Section */}
           <div>
             <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
               <span className="w-1 h-6 bg-gradient-to-b from-pink-500 to-rose-500 rounded-full"></span>
@@ -193,10 +193,10 @@ function Footer() {
         </div>
       </div>
 
-      {/* 🌈 Decorative Gradient Line */}
+      {/*Decorative Gradient Line */}
       <div className="h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
       
-      {/* 📄 Bottom Copyright Section */}
+      {/*  Bottom Copyright Section */}
       <div className="relative bg-gray-950/50 backdrop-blur-sm border-t border-gray-800">
         <div className="max-w-[1400px] mx-auto px-6 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">

@@ -1,4 +1,5 @@
-import { useContext, useState, useEffect } from "react";
+
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FiLogOut,
@@ -7,322 +8,171 @@ import {
   FiX,
   FiSearch,
   FiShoppingCart,
-  FiHeart,
   FiHome,
   FiInfo,
-  FiMail,
-  FiFileText,
+  FiPhone,
+  FiBook,
 } from "react-icons/fi";
 import { UserContext } from "./UserContext";
 import { instance } from "../axios";
-import toast from "react-hot-toast";
 
 function Header() {
-  const { input, setInput, Cart, user, setUser, setCart } =
-    useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(!!user?.role);
-
-  // 🔄 keep login state updated when user context changes
-  useEffect(() => {
-    setIsLoggedIn(!!user?.role);
-  }, [user]);
-
-  // 🧭 Logout function
-  async function handleLogout() {
+  const handleLogout = async () => {
     try {
-      await instance.post("/app/details/LogOuttheweb", {}, { withCredentials: true });
-      setCart(0);
-      setUser({ role: "" });
-      setIsLoggedIn(false);
-      toast.success("Logout successful!");
+      await instance.post("/logout");
+      setUser(null);
       navigate("/login");
-    } catch (err) {
-      console.log("Logout failed", err);
-      toast.error("Logout failed. Try again!");
+    } catch (error) {
+      console.error("Logout failed:", error);
     }
-  }
-
-  const handleLogin = () => {
-    toast("Redirecting to login...", { icon: "➡️" });
-    navigate("/login");
   };
 
-  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${searchQuery}`);
+      setSearchQuery("");
+      setMenuOpen(false);
+    }
+  };
 
   return (
-    <>
-      {user?.role !== "admin" ? (
-        <>
-          {/* USER HEADER */}
-          <header className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 shadow-xl sticky top-0 z-50 backdrop-blur-sm">
-            <div className="flex items-center justify-between px-4 lg:px-8 py-4 max-w-[1400px] mx-auto">
-              {/* 🛍️ LOGO */}
-              <Link to="/" className="group">
-                <h1 className="text-2xl md:text-3xl font-black text-white drop-shadow-lg flex items-center gap-2 group-hover:scale-105 transition-transform duration-300">
-                  <span className="text-3xl md:text-4xl animate-bounce">🛍️</span>
-                  <span className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">Shop</span>
-                  <span>Hub</span>
-                </h1>
-              </Link>
+    <header className="fixed top-0 left-0 w-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white shadow-md z-[1000]">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+        {/*  Logo */}
+        <Link to="/" className="flex items-center space-x-2">
+          <span className="text-2xl text-yellow-300">🛍️</span>
+          <h1 className="text-xl font-bold flex items-center">
+            <span className="text-yellow-400">Shop</span> Hub
+          </h1>
+        </Link>
 
-              {/* 🔍 Desktop Search */}
-              <div className="hidden lg:flex items-center w-full max-w-xl mx-8">
-                <div className="relative w-full group">
-                  <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" size={20} />
-                  <input
-                    type="text"
-                    className="w-full pl-12 pr-4 py-3 border-0 rounded-full bg-white shadow-lg focus:ring-4 focus:ring-white/30 focus:shadow-xl transition-all duration-300 text-gray-800 placeholder-gray-400 font-medium"
-                    placeholder="Search amazing products..."
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                  />
-                </div>
-              </div>
+        {/*  Search (Desktop) */}
+        <form
+          onSubmit={handleSearch}
+          className="hidden md:flex items-center bg-white/20 rounded-full px-3 py-1 w-1/3"
+        >
+          <FiSearch className="text-white mr-2" />
+          <input
+            type="text"
+            placeholder="Search products..."
+            className="bg-transparent placeholder-white focus:outline-none w-full text-white"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </form>
 
-              {/* 🧭 Desktop Nav */}
-              <nav className="hidden lg:flex items-center gap-2">
-                <Link 
-                  to="/" 
-                  className="flex items-center gap-2 text-white/90 hover:text-white hover:bg-white/10 px-4 py-2 rounded-xl transition-all duration-300 font-semibold"
-                >
-                  <FiHome size={18} />
-                  <span>Home</span>
-                </Link>
-                <Link 
-                  to="/about" 
-                  className="flex items-center gap-2 text-white/90 hover:text-white hover:bg-white/10 px-4 py-2 rounded-xl transition-all duration-300 font-semibold"
-                >
-                  <FiInfo size={18} />
-                  <span>About</span>
-                </Link>
-                <Link 
-                  to="/contact" 
-                  className="flex items-center gap-2 text-white/90 hover:text-white hover:bg-white/10 px-4 py-2 rounded-xl transition-all duration-300 font-semibold"
-                >
-                  <FiMail size={18} />
-                  <span>Contact</span>
-                </Link>
-                <Link 
-                  to="/blog" 
-                  className="flex items-center gap-2 text-white/90 hover:text-white hover:bg-white/10 px-4 py-2 rounded-xl transition-all duration-300 font-semibold"
-                >
-                  <FiFileText size={18} />
-                  <span>Blog</span>
-                </Link>
-                <Link 
-                  to="/Wishlist" 
-                  className="flex items-center gap-2 text-white/90 hover:text-white hover:bg-white/10 px-4 py-2 rounded-xl transition-all duration-300 font-semibold"
-                >
-                  <FiHeart size={18} />
-                  <span>Wishlist</span>
-                </Link>
+        {/* Desktop Menu */}
+        <nav className="hidden md:flex items-center space-x-6 font-medium">
+          <Link to="/" className="hover:text-yellow-300 flex items-center">
+            <FiHome className="mr-1" /> Home
+          </Link>
+          <Link to="/about" className="hover:text-yellow-300 flex items-center">
+            <FiInfo className="mr-1" /> About
+          </Link>
+          <Link to="/contact" className="hover:text-yellow-300 flex items-center">
+            <FiPhone className="mr-1" /> Contact
+          </Link>
+          <Link to="/products" className="hover:text-yellow-300 flex items-center">
+            <FiBook className="mr-1" /> Products
+          </Link>
+          <Link to="/cart" className="hover:text-yellow-300 flex items-center">
+            <FiShoppingCart className="mr-1" /> Cart
+          </Link>
 
-                {/* 🛒 Cart */}
-                <Link 
-                  to="/cart" 
-                  className="relative text-white hover:bg-white/10 px-4 py-2 rounded-xl transition-all duration-300 ml-2"
-                >
-                  <FiShoppingCart size={26} />
-                  {Cart > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs min-w-[22px] h-[22px] rounded-full flex items-center justify-center font-bold shadow-lg animate-pulse">
-                      {Cart}
-                    </span>
-                  )}
-                </Link>
-
-                {/* 🚪 Login / Logout */}
-                {isLoggedIn ? (
-                  <button
-                    onClick={handleLogout}
-                    className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 ml-2"
-                  >
-                    <FiLogOut size={20} />
-                    <span>Logout</span>
-                  </button>
-                ) : (
-                  <button
-                    onClick={handleLogin}
-                    className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 ml-2"
-                  >
-                    <FiLogIn size={20} />
-                    <span>Login</span>
-                  </button>
-                )}
-              </nav>
-
-              {/* 📱 Mobile Actions */}
-              <div className="lg:hidden flex items-center gap-3">
-                <Link 
-                  to="/cart" 
-                  className="relative text-white hover:bg-white/10 p-2 rounded-full transition-all duration-300"
-                >
-                  <FiShoppingCart size={26} />
-                  {Cart > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs min-w-[20px] h-[20px] rounded-full flex items-center justify-center font-bold shadow-lg">
-                      {Cart}
-                    </span>
-                  )}
-                </Link>
-
-                <button
-                  onClick={toggleMobileMenu}
-                  className="text-white p-2 rounded-full hover:bg-white/10 transition-all duration-300"
-                >
-                  {isMobileMenuOpen ? <FiX size={28} /> : <FiMenu size={28} />}
-                </button>
-              </div>
-            </div>
-
-            {/* 🔍 Mobile Search */}
-            <div className="lg:hidden px-4 pb-4">
-              <div className="relative">
-                <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-                <input
-                  type="text"
-                  className="w-full pl-11 pr-4 py-2.5 border-0 rounded-xl bg-white shadow-md focus:ring-2 focus:ring-white/30 text-gray-800 placeholder-gray-400"
-                  placeholder="Search products..."
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                />
-              </div>
-            </div>
-          </header>
-
-          {/* 🌈 Decorative Line */}
-          <div className="h-1 bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 shadow-md"></div>
-
-          {/* 📱 Mobile Menu Dropdown */}
-          {isMobileMenuOpen && (
-            <div className="lg:hidden bg-white shadow-2xl absolute top-full left-0 right-0 z-40 animate-slideDown">
-              <nav className="flex flex-col p-4 space-y-2">
-                <Link 
-                  to="/" 
-                  onClick={toggleMobileMenu}
-                  className="flex items-center gap-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 px-4 py-3 rounded-xl transition-all duration-300 font-semibold"
-                >
-                  <FiHome size={20} />
-                  <span>Home</span>
-                </Link>
-                <Link 
-                  to="/about" 
-                  onClick={toggleMobileMenu}
-                  className="flex items-center gap-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 px-4 py-3 rounded-xl transition-all duration-300 font-semibold"
-                >
-                  <FiInfo size={20} />
-                  <span>About</span>
-                </Link>
-                <Link 
-                  to="/contact" 
-                  onClick={toggleMobileMenu}
-                  className="flex items-center gap-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 px-4 py-3 rounded-xl transition-all duration-300 font-semibold"
-                >
-                  <FiMail size={20} />
-                  <span>Contact</span>
-                </Link>
-                <Link 
-                  to="/blog" 
-                  onClick={toggleMobileMenu}
-                  className="flex items-center gap-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 px-4 py-3 rounded-xl transition-all duration-300 font-semibold"
-                >
-                  <FiFileText size={20} />
-                  <span>Blog</span>
-                </Link>
-                <Link 
-                  to="/Wishlist" 
-                  onClick={toggleMobileMenu}
-                  className="flex items-center gap-3 text-gray-700 hover:bg-pink-50 hover:text-pink-600 px-4 py-3 rounded-xl transition-all duration-300 font-semibold"
-                >
-                  <FiHeart size={20} />
-                  <span>Wishlist</span>
-                </Link>
-
-                <div className="border-t border-gray-200 my-2"></div>
-
-                {isLoggedIn ? (
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      toggleMobileMenu();
-                    }}
-                    className="flex items-center gap-3 bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300"
-                  >
-                    <FiLogOut size={20} />
-                    <span>Logout</span>
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => {
-                      handleLogin();
-                      toggleMobileMenu();
-                    }}
-                    className="flex items-center gap-3 bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300"
-                  >
-                    <FiLogIn size={20} />
-                    <span>Login</span>
-                  </button>
-                )}
-              </nav>
-            </div>
+          {user ? (
+            <button
+              onClick={handleLogout}
+              className="hover:text-red-300 flex items-center"
+            >
+              <FiLogOut className="mr-1" /> Logout
+            </button>
+          ) : (
+            <Link to="/login" className="hover:text-green-300 flex items-center">
+              <FiLogIn className="mr-1" /> Login
+            </Link>
           )}
-        </>
-      ) : (
-        // ✅ Admin Header
-        <>
-          <header className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-2xl sticky top-0 z-50">
-            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-between items-center h-20">
-                <Link to={"/"} className="group">
-                  <h1 className="text-2xl md:text-3xl font-black text-transparent bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text group-hover:scale-105 transition-transform duration-300 flex items-center gap-2">
-                    <span className="text-3xl">👨‍💼</span>
-                    Admin Panel
-                  </h1>
-                </Link>
+        </nav>
 
-                <nav className="flex items-center gap-4">
-                  <Link 
-                    to={"/"} 
-                    className="flex items-center gap-2 text-gray-300 hover:text-white hover:bg-white/10 px-4 py-2 rounded-xl transition-all duration-300 font-semibold"
-                  >
-                    <FiShoppingCart size={20} />
-                    <span className="hidden md:inline">All Products</span>
-                  </Link>
-                  <Link 
-                    to={"/addProduct"} 
-                    className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-5 py-2 rounded-xl transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
-                  >
-                    <span className="text-xl">➕</span>
-                    <span className="hidden md:inline">Add Product</span>
-                  </Link>
+        {/*  Mobile Menu Button */}
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="md:hidden text-3xl text-white focus:outline-none"
+        >
+          {menuOpen ? <FiX /> : <FiMenu />}
+        </button>
+      </div>
 
-                  {isLoggedIn ? (
-                    <button
-                      onClick={handleLogout}
-                      className="flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-5 py-2 rounded-xl transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
-                    >
-                      <FiLogOut size={20} />
-                      <span>Logout</span>
-                    </button>
-                  ) : (
-                    <button
-                      onClick={handleLogin}
-                      className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-5 py-2 rounded-xl transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
-                    >
-                      <FiLogIn size={20} />
-                      <span>Login</span>
-                    </button>
-                  )}
-                </nav>
-              </div>
-            </div>
-          </header>
-          <div className="h-1 bg-gradient-to-r from-yellow-400 via-orange-400 to-red-500 shadow-md"></div>
-        </>
-      )}
-    </>
+      {/*  Mobile Menu */}
+      <div
+        className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${
+          menuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="bg-white text-gray-800 rounded-b-xl shadow-lg mx-3 mt-2 mb-2 py-3 z-[999] relative">
+          {/* Search (Mobile) */}
+          <form
+            onSubmit={handleSearch}
+            className="flex items-center bg-gray-100 rounded-md mx-3 px-3 py-2 mb-3"
+          >
+            <FiSearch className="text-gray-500 mr-2" />
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="bg-transparent focus:outline-none w-full"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </form>
+
+          {/* Links */}
+          <nav className="flex flex-col space-y-2 px-4">
+            <Link to="/" onClick={() => setMenuOpen(false)} className="flex items-center hover:text-blue-600">
+              <FiHome className="mr-2" /> Home
+            </Link>
+            <Link to="/about" onClick={() => setMenuOpen(false)} className="flex items-center hover:text-blue-600">
+              <FiInfo className="mr-2" /> About
+            </Link>
+            <Link to="/contact" onClick={() => setMenuOpen(false)} className="flex items-center hover:text-blue-600">
+              <FiPhone className="mr-2" /> Contact
+            </Link>
+            <Link to="/products" onClick={() => setMenuOpen(false)} className="flex items-center hover:text-blue-600">
+              <FiBook className="mr-2" /> Products
+            </Link>
+            <Link to="/cart" onClick={() => setMenuOpen(false)} className="flex items-center hover:text-blue-600">
+              <FiShoppingCart className="mr-2" /> Cart
+            </Link>
+
+            {user ? (
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setMenuOpen(false);
+                }}
+                className="flex items-center text-red-600 hover:text-red-700"
+              >
+                <FiLogOut className="mr-2" /> Logout
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center text-blue-600 hover:text-blue-700"
+              >
+                <FiLogIn className="mr-2" /> Login
+              </Link>
+            )}
+          </nav>
+        </div>
+      </div>
+    </header>
   );
 }
 
-export default Header
+export default Header;
+
