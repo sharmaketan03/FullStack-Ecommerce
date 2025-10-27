@@ -23,19 +23,22 @@ const Bannerslider = () => {
         pagination={{ clickable: true }}
         autoplay={{ delay: 3000, disableOnInteraction: false }}
         loop={true}
-        className=" overflow-hidden"
+        className="overflow-hidden"
       >
         {banners.map((banner, index) => (
           <SwiperSlide key={index}>
-            <img
-              src={banner}
-              alt={`Banner ${index + 1}`}
-              className="w-full h-[400px] "
-            />
+            <div className="w-full h-[220px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[550px] relative">
+              <img
+                src={banner}
+                alt={`Banner ${index + 1}`}
+                className="w-full h-full object-cover"
+              />
+              {/* Optional overlay gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>
-      
     </div>
   );
 };

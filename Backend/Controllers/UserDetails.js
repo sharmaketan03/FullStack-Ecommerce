@@ -19,7 +19,7 @@ export async function Register(req, res) {
   const { firstname, lastname, email, password } = req.body;
 
   try {
-    if (!email || !password || !firstname || !lastname) {
+    if (!email || !password ) {
       return res.status(400).json({ message: "message:missing fields" });
     }
 
@@ -41,36 +41,36 @@ export async function Register(req, res) {
     await newUser.save();
     console.log('register email 1:',email)
 
-//     let auth= nodemailer.createTransport({
-//           service:'gmail',
-//           secure:false,
-//           port:587,
-//           auth:{
-//             user: "ketan301024@gmail.com",
-//             pass: "wazf xyqj axlh mtyc"
-//           }
+    let auth= nodemailer.createTransport({
+          service:'gmail',
+          secure:false,
+          port:587,
+          auth:{
+            user: "ketan301024@gmail.com",
+            pass: "wazf xyqj axlh mtyc"
+          }
 
-//     })
-//    const reciver = {
-//   from: "ketan301024@gmail.com",
-//   to: email,
-//   subject: "Welcome to Ecommerce Web (aapki apni dukkan)! 🎉",
-//   text:
-//     "Hi " + firstname + " " + lastname + ",\n\n" +
-//     "Thank you for registering with Ecommerce Web App.\n" +
-//     "We’re excited to have you onboard! 🎊\n\n" +
-//     "You can now explore our latest collections, track your orders, and enjoy exclusive offers.\n\n" +
-//     "👉 Get started here: Ecommerce Web(apki apni dukkan)\n\n" +
-//     "Best regards,\n" +
-//     "Team Ecommerce Web",
-// };
+    })
+   const reciver = {
+  from: "ketan301024@gmail.com",
+  to: email,
+  subject: "Welcome to Ecommerce Web (aapki apni dukkan)! 🎉",
+  text:
+    "Hi " + firstname + " " + lastname + ",\n\n" +
+    "Thank you for registering with Ecommerce Web App.\n" +
+    "We’re excited to have you onboard! 🎊\n\n" +
+    "You can now explore our latest collections, track your orders, and enjoy exclusive offers.\n\n" +
+    "👉 Get started here: Ecommerce Web(apki apni dukkan)\n\n" +
+    "Best regards,\n" +
+    "Team Ecommerce Web",
+};
 
-// auth.sendMail(reciver,(error,emailresponse)=>{
-//   if(error){
-//     return console.log("Error:", error);
-//   }
-//   console.log("Message sent: %s",emailresponse.messageId)
-// })
+auth.sendMail(reciver,(error,emailresponse)=>{
+  if(error){
+    return console.log("Error:", error);
+  }
+  console.log("Message sent: %s",emailresponse.messageId)
+})
 
 
     return res
