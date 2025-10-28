@@ -135,11 +135,11 @@ function Header() {
               <FiPhone className="mr-2" /> Contact
             </Link>
             <Link
-              to="/products"
+              to="/wishlist"
               onClick={() => setMenuOpen(false)}
               className="flex items-center hover:text-blue-600"
             >
-              <FiBook className="mr-2" /> Products
+              <FiBook className="mr-2" /> Wishlist
             </Link>
             <Link
               to="/cart"
