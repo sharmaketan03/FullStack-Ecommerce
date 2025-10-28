@@ -62,8 +62,8 @@ function Header() {
           <Link to="/contact" className="hover:text-yellow-300 flex items-center">
             <FiPhone className="mr-1" /> Contact
           </Link>
-          <Link to="/products" className="hover:text-yellow-300 flex items-center">
-            <FiBook className="mr-1" /> Products
+          <Link to="/wishlist" className="hover:text-yellow-300 flex items-center">
+            <FiBook className="mr-1" />Wishlist
           </Link>
           <Link to="/cart" className="hover:text-yellow-300 flex items-center">
             <FiShoppingCart className="mr-1" /> Cart
